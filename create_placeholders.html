@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Placeholder Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .placeholder {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .download-link {
+            display: block;
+            margin-top: 10px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .download-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Generate Placeholder Images for Rakshabandhan Gallery</h1>
+        <p>Click the button below to generate placeholder images for testing the photo gallery.</p>
+        
+        <button onclick="generateAllPlaceholders()">Generate All Placeholder Images</button>
+        <button onclick="downloadAll()">Download All Images</button>
+        
+        <div id="placeholders"></div>
+    </div>
+
+    <script>
+        function createPlaceholderImage(number, title) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 200;
+            canvas.height = 200;
+            const ctx = canvas.getContext('2d');
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, 200, 200);
+            const colors = [
+                ['#ff6b6b', '#ffd93d'],
+                ['#4ecdc4', '#44a08d'],
+                ['#a8e6cf', '#dcedc1'],
+                ['#ff8b94', '#ffc3a0'],
+                ['#d4a5a5', '#ffd3b6'],
+                ['#ff9a9e', '#fecfef'],
+                ['#a8edea', '#fed6e3'],
+                ['#ffecd2', '#fcb69f'],
+                ['#ff9a9e', '#fad0c4'],
+                ['#a8edea', '#fed6e3'],
+                ['#ffecd2', '#fcb69f'],
+                ['#ff9a9e', '#fad0c4']
+            ];
+            
+            const colorPair = colors[(number - 1) % colors.length];
+            gradient.addColorStop(0, colorPair[0]);
+            gradient.addColorStop(1, colorPair[1]);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 200, 200);
+            
+            // Add decorative elements
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.beginPath();
+            ctx.arc(100, 100, 60, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Add heart icon
+            ctx.fillStyle = '#fff';
+            ctx.font = '30px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('💝', 100, 110);
+            
+            // Add number
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 24px Arial';
+            ctx.fillText(`Photo ${number}`, 100, 140);
+            
+            // Add title
+            ctx.fillStyle = '#666';
+            ctx.font = '12px Arial';
+            ctx.fillText(title, 100, 160);
+            
+            return canvas;
+        }
+        
+        function generateAllPlaceholders() {
+            const container = document.getElementById('placeholders');
+            container.innerHTML = '';
+            
+            const titles = [
+                'Our first memory together',
+                'Fun times on vacation',
+                'Brother-sister bond forever',
+                'Celebrating together',
+                'Laughter and love',
+                'Our special moments',
+                'Growing up together',
+                'Adventure buddies',
+                'Late night talks',
+                'Support system',
+                'Future dreams',
+                'Forever sisters'
+            ];
+            
+            for (let i = 1; i <= 12; i++) {
+                const canvas = createPlaceholderImage(i, titles[i-1]);
+                const placeholder = document.createElement('div');
+                placeholder.className = 'placeholder';
+                
+                const title = document.createElement('div');
+                title.textContent = `photo${i}.jpg`;
+                title.style.marginBottom = '5px';
+                title.style.fontWeight = 'bold';
+                
+                const downloadLink = document.createElement('a');
+                downloadLink.href = canvas.toDataURL();
+                downloadLink.download = `photo${i}.jpg`;
+                downloadLink.textContent = 'Download';
+                downloadLink.className = 'download-link';
+                
+                placeholder.appendChild(title);
+                placeholder.appendChild(canvas);
+                placeholder.appendChild(downloadLink);
+                container.appendChild(placeholder);
+            }
+        }
+        
+        function downloadAll() {
+            const titles = [
+                'Our first memory together',
+                'Fun times on vacation',
+                'Brother-sister bond forever',
+                'Celebrating together',
+                'Laughter and love',
+                'Our special moments',
+                'Growing up together',
+                'Adventure buddies',
+                'Late night talks',
+                'Support system',
+                'Future dreams',
+                'Forever sisters'
+            ];
+            
+            for (let i = 1; i <= 12; i++) {
+                const canvas = createPlaceholderImage(i, titles[i-1]);
+                const link = document.createElement('a');
+                link.href = canvas.toDataURL();
+                link.download = `photo${i}.jpg`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+        
+        // Auto-generate on page load
+        window.addEventListener('load', generateAllPlaceholders);
+    </script>
+</body>
+</html>
